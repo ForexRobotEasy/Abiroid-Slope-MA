@@ -1,0 +1,59 @@
+mql5
+//+------------------------------------------------------------------+
+//|                                                Abiroid Slope MA |
+//|                                    Copyright © 2021 forexroboteasy.com |
+//|                                                   Forex Robot Easy Team |
+//+------------------------------------------------------------------+
+
+#property copyright 'Copyright © 2021 forexroboteasy.com'
+#property link      'forexroboteasy.com'
+
+//+------------------------------------------------------------------+
+//| Custom indicator initialization function                         |
+//+------------------------------------------------------------------+
+int OnInit()
+{
+    // Initialization code
+    return(INIT_SUCCEEDED);
+}
+
+//+------------------------------------------------------------------+
+//| Custom indicator iteration function                              |
+//+------------------------------------------------------------------+
+int OnCalculate(const int rates_total,
+                const int prev_calculated,
+                const datetime &time[],
+                const double &open[],
+                const double &high[],
+                const double &low[],
+                const double &close[],
+                const long &tick_volume[],
+                const long &volume[],
+                const int &spread[])
+{
+    // Calculation code
+    
+    // Moving Average Slope for Max Past Bars
+    int pastBars = 10;  // Set the number of past bars to monitor
+    double maValue = iMA(NULL, 0, 14, 0, MODE_SMA, PRICE_CLOSE, 0);  // Calculate moving average value
+    double slope = (maValue - iMA(NULL, 0, 14, 0, MODE_SMA, PRICE_CLOSE, pastBars)) / pastBars;  // Calculate slope value
+    
+    // Slope Period
+    int period = 5;  // Set the number of periods for slope calculation
+    double slopeValue = (iMA(NULL, 0, 14, 0, MODE_SMA, PRICE_CLOSE, 0) - iMA(NULL, 0, 14, 0, MODE_SMA, PRICE_CLOSE, period)) / period;  // Calculate slope value based on period
+    
+    // Slope Thresholds
+    double threshold = 0.5;  // Set the slope threshold value
+    if (slope > threshold)
+    {
+        // Slope is above threshold, indicating upward trend
+        // Place buy trade or take other appropriate action
+    }
+    else if (slope < -threshold)
+    {
+        // Slope is below threshold, indicating downward trend
+        // Place sell trade or take other appropriate action
+    }
+    
+    return(rates_total);
+}
